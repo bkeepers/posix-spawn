@@ -177,11 +177,11 @@ module POSIX
             begin
               boom = nil
               size = fd.write_nonblock(input)
-              input = input[size, input.size]
+              input = input.byteslice[size, input.bytesize]
             rescue Errno::EPIPE => boom
             rescue Errno::EAGAIN, Errno::EINTR
             end
-            if boom || input.size == 0
+            if boom || input.bytesize == 0
               stdin.close
               writers.delete(stdin)
             end
